@@ -11,9 +11,25 @@
         Background="#190047FF"
         Topmost="False"
         ShowInTaskbar="True"
-        Title="Pomodoro" PreviewMouseDown="Window_PreviewMouseDown"
-        Name="mainWindow">
+        Title="Pomodoro" 
+        PreviewMouseDown="Window_PreviewMouseDown" 
+        PreviewMouseRightButtonDown="Window_PreviewMouseRightButtonDown" 
+        MouseMove="Window_MouseMove" 
+        PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp" MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        >
     <Canvas Name="canvas">
+        <Rectangle x:Name="marqueeRect" Fill="Transparent" StrokeThickness="10" Visibility="Collapsed">
+            <Rectangle.RenderTransform>
+                <TranslateTransform x:Name="marqueeTransform" />
+            </Rectangle.RenderTransform>
+            <Rectangle.Stroke>
+                <ImageBrush ImageSource="/Assets/Textures/fenceTexture.png" TileMode="Tile" Viewport="0,0,0.1,0.1"/>
+            </Rectangle.Stroke>
+        </Rectangle>
+        <Label Name="marqueeLabel" FontSize="50" Width="895" Content="Select Fence Area (Right Click to Cancel)" Foreground="#ffffff" FontFamily="pack://application:,,,/SourGummy-Regular.ttf#Sour Gummy" Visibility="Collapsed"/>
+
+        
+
         <Image Name="rabbitRect" Width="185" Height="200" MouseLeftButtonDown="RabbitRect_MouseLeftButtonDown" MouseRightButtonDown="RabbitRect_MouseRightButtonDown" MouseLeftButtonUp="RabbitRect_MouseLeftButtonUp">
             <Image.RenderTransform>
                 <TransformGroup>
@@ -22,15 +38,16 @@
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
-        <Image Name="heart" Width="60" Height="50" Source="pack://application:,,,/Assets/Sprites/Static/Heart.png" Opacity="0">
+        
+        <Image Name="heart" Width="60" Source="pack://application:,,,/Assets/Sprites/Static/Heart.png" Opacity="0">
             <Image.RenderTransform>
                 <TransformGroup>
                     <TranslateTransform x:Name="heartTransform" />
                 </TransformGroup>
             </Image.RenderTransform>
         </Image>
-        
-        <Grid x:Name="optionsGrid" Width="100" Height="100" Visibility="Collapsed">
+
+        <Grid x:Name="optionsGrid" Width="100" Visibility="Collapsed">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <TranslateTransform x:Name="optionsTransform" />
@@ -42,21 +59,28 @@
                 </Style>
             </Grid.Resources>
             <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition />
-                <RowDefinition />
+                <RowDefinition x:Name="alarmStatusRow" Height="0"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="40"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition  />
-                <ColumnDefinition />
-                <ColumnDefinition />
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
+
+            <Label Name="alarmStatus" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="30" Content=" : " Foreground="Red" Width="100" Height="40" FontFamily="pack://application:,,,/WDXLLubrifontSC-Regular.ttf/#WDXL Lubrifont SC" Grid.ColumnSpan="3">
+                <Label.Background>
+                    <ImageBrush ImageSource="/Assets/Sprites/Static/alarmClock.png" />
+                </Label.Background>
+            </Label>
             
-            <Image Name="minus" Source="/Assets/Sprites/Static/minus.png" Grid.Row="0" Grid.Column="0" MouseLeftButtonDown="Minus_MouseLeftButtonDown" />
-            <Image Name="plus" Source="/Assets/Sprites/Static/plus.png" Grid.Row="0" Grid.Column="1" MouseLeftButtonDown="Plus_MouseLeftButtonDown" />
-            <Image Name="alarm" Source="/Assets/Sprites/Static/alarm.png" Grid.Row="1" Grid.Column="0" MouseLeftButtonDown="Alarm_MouseLeftButtonDown" />
-            <Image Name="fence" Source="/Assets/Sprites/Static/fence.png" Grid.Row="1" Grid.Column="1" />
-            <Image Name="exit" Source="/Assets/Sprites/Static/exit.png" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" />
+            
+            <Image Name="minus" Source="/Assets/Sprites/Static/minus.png" Grid.Row="1" Grid.Column="0" MouseLeftButtonDown="Minus_MouseLeftButtonDown" />
+            <Image Name="plus" Source="/Assets/Sprites/Static/plus.png" Grid.Row="1" Grid.Column="1" MouseLeftButtonDown="Plus_MouseLeftButtonDown" />
+            <Image Name="alarm" Source="/Assets/Sprites/Static/alarm.png" Grid.Row="2" Grid.Column="0" MouseLeftButtonDown="Alarm_MouseLeftButtonDown" />
+            <Image Name="fence" Source="/Assets/Sprites/Static/fence.png" Grid.Row="2" Grid.Column="1" MouseLeftButtonDown="Fence_MouseLeftButtonDown" />
+            <Image Name="exit" Source="/Assets/Sprites/Static/exit.png" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
         </Grid>
 
         <Grid x:Name="alarmSettings" Width="200" Height="250" Visibility="Collapsed">
@@ -85,7 +109,7 @@
 
             <TextBlock Grid.Row="3" Grid.Column="0" FontSize="17" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="pack://application:,,,/SourGummy-Regular.ttf#Sour Gummy" Foreground="#8c672b" TextWrapping="Wrap" TextAlignment="Center">Long Break Time</TextBlock>
             <TextBox Name="longBreakTime" Text="25" Height="25" Width="80" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontFamily="pack://application:,,,/SourGummy-Regular.ttf#Sour Gummy" Foreground="#b58d38" TextAlignment="Center" Background="#2b1e10" FontSize="17" PreviewTextInput="NumberTextBox_PreviewTextInput"/>
-            
+
             <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Button Name="playButton" Width="25" Height="24" Margin="5" BorderBrush="{x:Null}" Foreground="{x:Null}">
                     <Button.Style>
@@ -150,7 +174,7 @@
                 <Label Name="bannerTextBox6" Background="#0015ff" Height="75" Content="" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#ffffff" FontFamily="pack://application:,,,/Tourney_Condensed-Italic.ttf#Tourney Condensed" FontSize="70"/>
                 <Label Name="bannerTextBox7" Background="#0015ff" Height="75" Content="" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#ffffff" FontFamily="pack://application:,,,/Tourney_Condensed-Italic.ttf#Tourney Condensed" FontSize="70"/>
             </UniformGrid>
-            
+
             <Image x:Name="bannerEndImage" Source="/Assets/Sprites/Static/bannerBlue.png" Width="75" Height="75" Margin="0">
                 <Image.RenderTransform>
                     <TransformGroup>
