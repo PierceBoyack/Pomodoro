@@ -47,7 +47,7 @@
             </Image.RenderTransform>
         </Image>
 
-        <Grid x:Name="optionsGrid" Width="100" Visibility="Collapsed">
+        <Grid x:Name="optionsGrid" Width="120" Visibility="Collapsed">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <TranslateTransform x:Name="optionsTransform" />
@@ -80,9 +80,13 @@
             <Image Name="plus" Source="/Assets/Sprites/Static/plus.png" Grid.Row="1" Grid.Column="1" MouseLeftButtonDown="Plus_MouseLeftButtonDown" />
             <Image Name="alarm" Source="/Assets/Sprites/Static/alarm.png" Grid.Row="2" Grid.Column="0" MouseLeftButtonDown="Alarm_MouseLeftButtonDown" />
             <Image Name="fence" Source="/Assets/Sprites/Static/fence.png" Grid.Row="2" Grid.Column="1" MouseLeftButtonDown="Fence_MouseLeftButtonDown" />
-            <Image Name="exit" Source="/Assets/Sprites/Static/exit.png" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" />
+            <Image Name="exit" Source="/Assets/Sprites/Static/exit.png" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" MouseLeftButtonDown="Exit_MouseLeftButtonDown" />
+            
         </Grid>
-
+        
+        <Image Name="ball" Source="/Assets/Sprites/Static/play.png" Visibility="Collapsed" />
+        <Image Name="food" Source="/Assets/Sprites/Static/food.png" Visibility="Collapsed"/>
+        
         <Grid x:Name="alarmSettings" Width="200" Height="250" Visibility="Collapsed">
             <Grid.Background>
                 <ImageBrush ImageSource="/Assets/Sprites/Static/alarmcard.png" />

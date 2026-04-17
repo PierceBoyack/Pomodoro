@@ -15,12 +15,51 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Remove="Sounds\**" />
+    <EmbeddedResource Remove="Sounds\**" />
+    <None Remove="Sounds\**" />
+    <Page Remove="Sounds\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="Assets\Sounds\happy.wav" />
+    <Content Remove="Assets\Sounds\sharpAlarm.wav" />
+    <Content Remove="Assets\Sounds\silent.wav" />
+    <Content Remove="Assets\Sounds\softAlarm.wav" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="SourGummy-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="SourGummy-Regular.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Properties\Resources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Assets\Sounds\happy.wav">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sounds\sharpAlarm.wav">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sounds\silent.wav">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\Sounds\softAlarm.wav">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Page Update="MainWindow.xaml">

@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Drawing;
+using System.Media;
 using System.Text.RegularExpressions;
 using System.Threading.Channels;
 using System.Timers;
@@ -29,6 +30,7 @@ namespace Pomodoro {
         readonly Stopwatch stopwatch = new();
         TimeSpan originalTime = TimeSpan.Zero;
         TimeSpan remainingTime;
+        readonly SoundPlayer soundPlayer = new();
         System.Windows.Point marqueeStart;
         bool marqueeSelectionActive = false;
         bool letThisShitWork = false;
@@ -46,6 +48,8 @@ namespace Pomodoro {
         double transformX = 0;
         double transformY = 0;
         short scale = 0;
+        readonly ColumnDefinition longBreakColumn = new();
+        
 
 
 
@@ -62,7 +66,7 @@ namespace Pomodoro {
         //Dictionary of states to (maxFrames, ticksPerFrame, (width, height))
         private readonly Dictionary<string, (short, short, (short, short))> states = new() {
                                                                                 { "Alarm", (2, 10, (115, 110)) }, { "Asleep", (6, 12, (75, 70)) }, { "Catch", (8, 3, (100, 170)) },
-                                                                                { "Draw", (4, 10, (90, 140)) }, { "Drowsy", (7, 10, (75, 70)) }, { "Entry", (8, 3, (185, 200)) },
+                                                                                { "Draw", (4, 10, (90, 140)) }, { "Drowsy", (7, 10, (75, 70)) }, { "Entry", (8, 3, (75, 70)) },
                                                                                 { "Exit", (8, 3, (185, 200)) }, { "Idle", (6, 8, (75, 60)) }, { "Run", (6, 4, (100, 75)) } };
         string currentState = "Entry";
 
@@ -79,6 +83,7 @@ namespace Pomodoro {
             Canvas.SetTop(rabbitRect, workHeight / 8);
             Canvas.SetLeft(marqueeLabel, (workWidth/2) - (marqueeLabel.Width/2));
             Canvas.SetTop(marqueeLabel, 50);
+            longBreakColumn.Width = new GridLength(1, GridUnitType.Star);
             mouseLeftHoldTimer.Tick += MouseLeftHoldTimer_Tick;
             // Track mouse movements so the rabbit can follow while the left button is held
             canvas.MouseMove += Canvas_MouseMove;
@@ -99,11 +104,13 @@ namespace Pomodoro {
                 heartFrames--;
                 if (frame >= maxFrames) {
                     frame = 0;
-                    if (minimumCycles > 0) {
-                        minimumCycles--;
-                    } else if (currentState == "Alarm") {
+                    minimumCycles--;
+                    if (currentState == "Alarm") {
                         minimumCycles++; // Prevent changing state at the end of the cycle so the alarm animation can loop until dismissed
-                    } else {
+                    } else if (currentState == "Exit") {
+                        Application.Current.Shutdown(); // Close the application when the exit animation finishes
+
+                    } else if (minimumCycles <= 0) {
                         ChangeState();
                     }
                 }
@@ -149,6 +156,13 @@ namespace Pomodoro {
         private string GetUri() {
             return $"pack://application:,,,/Assets/Sprites/{currentState}/{currentState}{frame}.png";
         }
+
+        private void PlayAudio(System.IO.Stream path) {
+            soundPlayer.Stream = path;
+            soundPlayer.LoadAsync();
+            soundPlayer.LoadCompleted += (s, e) => soundPlayer.Play();
+        }
+
         private void SetStateInfo() {
             tickCount = 0;
             frame = 0;
@@ -173,6 +187,9 @@ namespace Pomodoro {
                 minimumCycles = 10;
             } else {
                 minimumCycles = 1;
+            }
+            if (currentState == "Exit") {
+                rabbitTransform.Y -= 40;
             }
         }
         private void MoveRabbit(double x, double y) {
@@ -345,7 +362,6 @@ namespace Pomodoro {
                 alarmClock.Start();
             }
 
-
             optionsGrid.Visibility = Visibility.Visible;
             if (currentX + optionsGrid.Width > workWidth) {
                 currentX = workWidth - optionsGrid.Width - 10;
@@ -356,11 +372,6 @@ namespace Pomodoro {
             optionsTransform.X = currentX;
             optionsTransform.Y = currentY;
         }
-
-
-
-
-
         private void Window_PreviewMouseDown(object sender, MouseButtonEventArgs e) {
             if (optionsGrid.Visibility == Visibility.Visible) {
                 if (!optionsGrid.IsMouseOver) {
@@ -374,9 +385,9 @@ namespace Pomodoro {
             if (alarmSettings.Visibility == Visibility.Visible) {
                 if (!alarmSettings.IsMouseOver) {
                     alarmSettings.Visibility = Visibility.Collapsed;
+                    ChangeState();
+                    rabbitTransform.X += 30;
                 }
-                ChangeState();
-                rabbitTransform.X += 30;
             }
         }
         private void Window_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e) {
@@ -464,7 +475,25 @@ namespace Pomodoro {
             marqueeLabel.Content = "Select Fence Area (Right Click to Cancel)";
         }
 
-        
+        private void AddPlayOptions() {
+            optionsGrid.ColumnDefinitions.Add(longBreakColumn);
+            optionsGrid.Children.Add(ball);
+            optionsGrid.Children.Add(food);
+            Grid.SetRow(ball, 1);
+            Grid.SetRow(food, 2);
+            Grid.SetColumn(ball, 2);
+            Grid.SetColumn(food, 2);
+            ball.Visibility = Visibility.Visible;
+            food.Visibility = Visibility.Visible;
+        }
+
+        private void RemovePlayOptions() {
+            ball.Visibility = Visibility.Collapsed;
+            food.Visibility = Visibility.Collapsed;
+            optionsGrid.ColumnDefinitions.Remove(longBreakColumn);
+            optionsGrid.Children.Remove(ball);
+            optionsGrid.Children.Remove(food);
+        }
 
         private void NumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) {
             // Check if the input text is a whole number (0-9)
@@ -494,6 +523,7 @@ namespace Pomodoro {
             pomodoroTimer.Elapsed += RestartPomodoroTimer;
             pomodoroTimer.Start();
             Dispatcher.Invoke(() => {
+                AddPlayOptions();
                 originalTime = TimeSpan.FromMinutes(longBreak);
                 stopwatch.Restart();
             });
@@ -501,9 +531,12 @@ namespace Pomodoro {
         }
         private void RestartPomodoroTimer(object? sender, ElapsedEventArgs e) {
             Debug.WriteLine("Long break ended. Pomodoro cycle complete.");
+            RemovePlayOptions();
             intervals = resetIntervals;
             StartPomodoroTimer();
         }
+
+
         private void LaunchBanner(string newText, string color) {
 
             // Ensure we run UI updates on the dispatcher (LaunchBanner may be called from timer threads)
@@ -549,12 +582,15 @@ namespace Pomodoro {
             if (color == "#0015ff") {
                 bannerStartImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/bannerBlue.png"));
                 bannerEndImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/bannerBlue.png"));
+                PlayAudio(Properties.Resources.sharpAlarm);
             } else if (color == "#330066") {
                 bannerStartImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/bannerDarkPurple.png"));
                 bannerEndImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/bannerDarkPurple.png"));
+                PlayAudio(Properties.Resources.softAlarm);
             } else if (color == "#190066") {
                 bannerStartImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/bannerPurple.png"));
                 bannerEndImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/bannerPurple.png"));
+                PlayAudio(Properties.Resources.softAlarm);
             }
 
             // Compute the total panel width explicitly to avoid NaN from Auto sizing
@@ -627,6 +663,11 @@ namespace Pomodoro {
 
         [GeneratedRegex("[^0-9]+")]
         private static partial Regex FilterOutNonDigits();
+
+        private void Exit_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            ChangeState("Exit");
+        }
+
         private void PlayButtonImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             showPlay = !showPlay;
             if (showPlay) {
@@ -674,6 +715,7 @@ namespace Pomodoro {
                     Debug.WriteLine($"Resuming Pomodoro Timer for {remainingTime.TotalSeconds} seconds in {phase} phase.");
                 }
                 alarmSettings.Visibility = Visibility.Collapsed;
+                ChangeState();
             }
         }
         private void ReplayButtonImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
