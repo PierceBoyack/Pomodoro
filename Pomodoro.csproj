@@ -21,15 +21,183 @@
     <Page Remove="Sounds\**" />
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="Assets\favicon.ico" />
     <Content Remove="Assets\Sounds\happy.wav" />
     <Content Remove="Assets\Sounds\sharpAlarm.wav" />
     <Content Remove="Assets\Sounds\silent.wav" />
     <Content Remove="Assets\Sounds\softAlarm.wav" />
+    <Content Remove="Assets\Sprites\Alarm\Alarm0.png" />
+    <Content Remove="Assets\Sprites\Alarm\Alarm1.png" />
+    <Content Remove="Assets\Sprites\Asleep\Asleep0.png" />
+    <Content Remove="Assets\Sprites\Asleep\Asleep1.png" />
+    <Content Remove="Assets\Sprites\Asleep\Asleep2.png" />
+    <Content Remove="Assets\Sprites\Asleep\Asleep3.png" />
+    <Content Remove="Assets\Sprites\Asleep\Asleep4.png" />
+    <Content Remove="Assets\Sprites\Asleep\Asleep5.png" />
+    <Content Remove="Assets\Sprites\Catch\Catch0.png" />
+    <Content Remove="Assets\Sprites\Catch\Catch1.png" />
+    <Content Remove="Assets\Sprites\Catch\Catch2.png" />
+    <Content Remove="Assets\Sprites\Catch\Catch3.png" />
+    <Content Remove="Assets\Sprites\Catch\Catch4.png" />
+    <Content Remove="Assets\Sprites\Catch\Catch5.png" />
+    <Content Remove="Assets\Sprites\Catch\Catch6.png" />
+    <Content Remove="Assets\Sprites\Catch\Catch7.png" />
+    <Content Remove="Assets\Sprites\Draw\Draw0.png" />
+    <Content Remove="Assets\Sprites\Draw\Draw1.png" />
+    <Content Remove="Assets\Sprites\Draw\Draw2.png" />
+    <Content Remove="Assets\Sprites\Draw\Draw3.png" />
+    <Content Remove="Assets\Sprites\Drowsy\Drowsy0.png" />
+    <Content Remove="Assets\Sprites\Drowsy\Drowsy1.png" />
+    <Content Remove="Assets\Sprites\Drowsy\Drowsy2.png" />
+    <Content Remove="Assets\Sprites\Drowsy\Drowsy3.png" />
+    <Content Remove="Assets\Sprites\Drowsy\Drowsy4.png" />
+    <Content Remove="Assets\Sprites\Drowsy\Drowsy5.png" />
+    <Content Remove="Assets\Sprites\Drowsy\Drowsy6.png" />
+    <Content Remove="Assets\Sprites\Entry\Entry0.png" />
+    <Content Remove="Assets\Sprites\Entry\Entry1.png" />
+    <Content Remove="Assets\Sprites\Entry\Entry2.png" />
+    <Content Remove="Assets\Sprites\Entry\Entry3.png" />
+    <Content Remove="Assets\Sprites\Entry\Entry4.png" />
+    <Content Remove="Assets\Sprites\Entry\Entry5.png" />
+    <Content Remove="Assets\Sprites\Entry\Entry6.png" />
+    <Content Remove="Assets\Sprites\Entry\Entry7.png" />
+    <Content Remove="Assets\Sprites\Exit\Exit0.png" />
+    <Content Remove="Assets\Sprites\Exit\Exit1.png" />
+    <Content Remove="Assets\Sprites\Exit\Exit2.png" />
+    <Content Remove="Assets\Sprites\Exit\Exit3.png" />
+    <Content Remove="Assets\Sprites\Exit\Exit4.png" />
+    <Content Remove="Assets\Sprites\Exit\Exit5.png" />
+    <Content Remove="Assets\Sprites\Exit\Exit6.png" />
+    <Content Remove="Assets\Sprites\Exit\Exit7.png" />
+    <Content Remove="Assets\Sprites\Idle\Idle0.png" />
+    <Content Remove="Assets\Sprites\Idle\Idle1.png" />
+    <Content Remove="Assets\Sprites\Idle\Idle2.png" />
+    <Content Remove="Assets\Sprites\Idle\Idle3.png" />
+    <Content Remove="Assets\Sprites\Idle\Idle4.png" />
+    <Content Remove="Assets\Sprites\Idle\Idle5.png" />
+    <Content Remove="Assets\Sprites\Run\Run0.png" />
+    <Content Remove="Assets\Sprites\Run\Run1.png" />
+    <Content Remove="Assets\Sprites\Run\Run2.png" />
+    <Content Remove="Assets\Sprites\Run\Run3.png" />
+    <Content Remove="Assets\Sprites\Run\Run4.png" />
+    <Content Remove="Assets\Sprites\Run\Run5.png" />
+    <Content Remove="Assets\Sprites\Static\alarm.png" />
+    <Content Remove="Assets\Sprites\Static\alarmCard.png" />
+    <Content Remove="Assets\Sprites\Static\alarmClock.png" />
+    <Content Remove="Assets\Sprites\Static\ball.png" />
+    <Content Remove="Assets\Sprites\Static\bannerBlue.png" />
+    <Content Remove="Assets\Sprites\Static\bannerDarkPurple.png" />
+    <Content Remove="Assets\Sprites\Static\bannerPurple.png" />
+    <Content Remove="Assets\Sprites\Static\carrot.png" />
+    <Content Remove="Assets\Sprites\Static\crayon.png" />
+    <Content Remove="Assets\Sprites\Static\exit.png" />
+    <Content Remove="Assets\Sprites\Static\fence.png" />
+    <Content Remove="Assets\Sprites\Static\food.png" />
+    <Content Remove="Assets\Sprites\Static\heart.png" />
+    <Content Remove="Assets\Sprites\Static\lettuce.png" />
+    <Content Remove="Assets\Sprites\Static\minus.png" />
+    <Content Remove="Assets\Sprites\Static\minusDisabled.png" />
+    <Content Remove="Assets\Sprites\Static\pause.png" />
+    <Content Remove="Assets\Sprites\Static\play.png" />
+    <Content Remove="Assets\Sprites\Static\playArrow.png" />
+    <Content Remove="Assets\Sprites\Static\plus.png" />
+    <Content Remove="Assets\Sprites\Static\plusDisabled.png" />
+    <Content Remove="Assets\Sprites\Static\rabbitHold.png" />
+    <Content Remove="Assets\Sprites\Static\replay.png" />
+    <Content Remove="Assets\Sprites\Static\tomato.png" />
+    <Content Remove="Assets\Textures\fenceTexture.png" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="SourGummy-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\Sprites\Entry\Entry6.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Sprites\Drowsy\Drowsy2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Assets\Sprites\Alarm\Alarm0.png" />
+    <Resource Include="Assets\Sprites\Alarm\Alarm1.png" />
+    <Resource Include="Assets\Sprites\Asleep\Asleep0.png" />
+    <Resource Include="Assets\Sprites\Asleep\Asleep1.png" />
+    <Resource Include="Assets\Sprites\Asleep\Asleep2.png" />
+    <Resource Include="Assets\Sprites\Asleep\Asleep3.png" />
+    <Resource Include="Assets\Sprites\Asleep\Asleep4.png" />
+    <Resource Include="Assets\Sprites\Asleep\Asleep5.png" />
+    <Resource Include="Assets\Sprites\Catch\Catch0.png" />
+    <Resource Include="Assets\Sprites\Catch\Catch1.png" />
+    <Resource Include="Assets\Sprites\Catch\Catch2.png" />
+    <Resource Include="Assets\Sprites\Catch\Catch3.png" />
+    <Resource Include="Assets\Sprites\Catch\Catch4.png" />
+    <Resource Include="Assets\Sprites\Catch\Catch5.png" />
+    <Resource Include="Assets\Sprites\Catch\Catch6.png" />
+    <Resource Include="Assets\Sprites\Catch\Catch7.png" />
+    <Resource Include="Assets\Sprites\Draw\Draw0.png" />
+    <Resource Include="Assets\Sprites\Draw\Draw1.png" />
+    <Resource Include="Assets\Sprites\Draw\Draw2.png" />
+    <Resource Include="Assets\Sprites\Draw\Draw3.png" />
+    <Resource Include="Assets\Sprites\Drowsy\Drowsy0.png" />
+    <Resource Include="Assets\Sprites\Drowsy\Drowsy1.png" />
+    <Resource Include="Assets\Sprites\Drowsy\Drowsy3.png" />
+    <Resource Include="Assets\Sprites\Drowsy\Drowsy4.png" />
+    <Resource Include="Assets\Sprites\Drowsy\Drowsy5.png" />
+    <Resource Include="Assets\Sprites\Drowsy\Drowsy6.png" />
+    <Resource Include="Assets\Sprites\Entry\Entry0.png" />
+    <Resource Include="Assets\Sprites\Entry\Entry1.png" />
+    <Resource Include="Assets\Sprites\Entry\Entry2.png" />
+    <Resource Include="Assets\Sprites\Entry\Entry3.png" />
+    <Resource Include="Assets\Sprites\Entry\Entry4.png" />
+    <Resource Include="Assets\Sprites\Entry\Entry5.png" />
+    <Resource Include="Assets\Sprites\Entry\Entry7.png" />
+    <Resource Include="Assets\Sprites\Exit\Exit0.png" />
+    <Resource Include="Assets\Sprites\Exit\Exit1.png" />
+    <Resource Include="Assets\Sprites\Exit\Exit2.png" />
+    <Resource Include="Assets\Sprites\Exit\Exit3.png" />
+    <Resource Include="Assets\Sprites\Exit\Exit4.png" />
+    <Resource Include="Assets\Sprites\Exit\Exit5.png" />
+    <Resource Include="Assets\Sprites\Exit\Exit6.png" />
+    <Resource Include="Assets\Sprites\Exit\Exit7.png" />
+    <Resource Include="Assets\Sprites\Idle\Idle0.png" />
+    <Resource Include="Assets\Sprites\Idle\Idle1.png" />
+    <Resource Include="Assets\Sprites\Idle\Idle2.png" />
+    <Resource Include="Assets\Sprites\Idle\Idle3.png" />
+    <Resource Include="Assets\Sprites\Idle\Idle4.png" />
+    <Resource Include="Assets\Sprites\Idle\Idle5.png" />
+    <Resource Include="Assets\Sprites\Run\Run0.png" />
+    <Resource Include="Assets\Sprites\Run\Run1.png" />
+    <Resource Include="Assets\Sprites\Run\Run2.png" />
+    <Resource Include="Assets\Sprites\Run\Run3.png" />
+    <Resource Include="Assets\Sprites\Run\Run4.png" />
+    <Resource Include="Assets\Sprites\Run\Run5.png" />
+    <Resource Include="Assets\Sprites\Static\alarm.png" />
+    <Resource Include="Assets\Sprites\Static\alarmCard.png" />
+    <Resource Include="Assets\Sprites\Static\alarmClock.png" />
+    <Resource Include="Assets\Sprites\Static\ball.png" />
+    <Resource Include="Assets\Sprites\Static\bannerBlue.png" />
+    <Resource Include="Assets\Sprites\Static\bannerDarkPurple.png" />
+    <Resource Include="Assets\Sprites\Static\bannerPurple.png" />
+    <Resource Include="Assets\Sprites\Static\carrot.png" />
+    <Resource Include="Assets\Sprites\Static\crayon.png" />
+    <Resource Include="Assets\Sprites\Static\exit.png" />
+    <Resource Include="Assets\Sprites\Static\fence.png" />
+    <Resource Include="Assets\Sprites\Static\food.png" />
+    <Resource Include="Assets\Sprites\Static\heart.png" />
+    <Resource Include="Assets\Sprites\Static\lettuce.png" />
+    <Resource Include="Assets\Sprites\Static\minus.png" />
+    <Resource Include="Assets\Sprites\Static\minusDisabled.png" />
+    <Resource Include="Assets\Sprites\Static\pause.png" />
+    <Resource Include="Assets\Sprites\Static\play.png" />
+    <Resource Include="Assets\Sprites\Static\playArrow.png" />
+    <Resource Include="Assets\Sprites\Static\plus.png" />
+    <Resource Include="Assets\Sprites\Static\plusDisabled.png" />
+    <Resource Include="Assets\Sprites\Static\rabbitHold.png" />
+    <Resource Include="Assets\Sprites\Static\replay.png" />
+    <Resource Include="Assets\Sprites\Static\tomato.png" />
+    <Resource Include="Assets\Textures\fenceTexture.png" />
     <Resource Include="SourGummy-Regular.ttf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
@@ -39,6 +207,11 @@
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -59,6 +232,10 @@
     </None>
     <None Update="Assets\Sounds\softAlarm.wav">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </None>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>

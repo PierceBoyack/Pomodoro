@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="#000047FF"
+        Background="Transparent"
         Topmost="True"
         ShowInTaskbar="True"
         Title="Pomodoro" 
@@ -16,6 +16,7 @@
         PreviewMouseRightButtonDown="Window_PreviewMouseRightButtonDown" 
         MouseMove="Window_MouseMove" 
         PreviewMouseLeftButtonUp="Window_PreviewMouseLeftButtonUp" MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        Icon="/Assets/favicon.ico"
         >
     <Canvas Name="canvas">
         <Rectangle x:Name="marqueeRect" Fill="Transparent" StrokeThickness="10" Visibility="Collapsed">
