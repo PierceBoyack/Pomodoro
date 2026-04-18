@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Assets\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <!-- Ensure any files placed under Assets are included as content and copied to the output folder -->
@@ -21,7 +22,6 @@
     <Page Remove="Sounds\**" />
   </ItemGroup>
   <ItemGroup>
-    <Content Remove="Assets\favicon.ico" />
     <Content Remove="Assets\Sounds\happy.wav" />
     <Content Remove="Assets\Sounds\sharpAlarm.wav" />
     <Content Remove="Assets\Sounds\silent.wav" />

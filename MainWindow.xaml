@@ -24,7 +24,7 @@
                 <TranslateTransform x:Name="marqueeTransform" />
             </Rectangle.RenderTransform>
             <Rectangle.Stroke>
-                <ImageBrush ImageSource="/Assets/Textures/fenceTexture.png" TileMode="Tile" Viewport="0,0,0.1,0.1"/>
+                <ImageBrush ImageSource="pack://application:,,,/Assets/Textures/fenceTexture.png" TileMode="Tile" Viewport="0,0,0.1,0.1"/>
             </Rectangle.Stroke>
         </Rectangle>
         <Label Name="marqueeLabel" FontSize="50" Width="895" Content="Select Fence Area (Right Click to Cancel)" Foreground="#ffffff" FontFamily="pack://application:,,,/SourGummy-Regular.ttf#Sour Gummy" Visibility="Collapsed"/>
@@ -73,22 +73,22 @@
 
             <Label Name="alarmStatus" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="30" Content=" : " Foreground="Red" Width="100" Height="40" FontFamily="pack://application:,,,/WDXLLubrifontSC-Regular.ttf/#WDXL Lubrifont SC" Grid.ColumnSpan="3">
                 <Label.Background>
-                    <ImageBrush ImageSource="/Assets/Sprites/Static/alarmClock.png" />
+                    <ImageBrush ImageSource="pack://application:,,,/Assets/Sprites/Static/alarmClock.png" />
                 </Label.Background>
             </Label>
-            
-            
-            <Image Name="minus" Source="/Assets/Sprites/Static/minus.png" Grid.Row="1" Grid.Column="0" MouseLeftButtonDown="Minus_MouseLeftButtonDown" />
-            <Image Name="plus" Source="/Assets/Sprites/Static/plus.png" Grid.Row="1" Grid.Column="1" MouseLeftButtonDown="Plus_MouseLeftButtonDown" />
-            <Image Name="alarm" Source="/Assets/Sprites/Static/alarm.png" Grid.Row="2" Grid.Column="0" MouseLeftButtonDown="Alarm_MouseLeftButtonDown" />
-            <Image Name="fence" Source="/Assets/Sprites/Static/fence.png" Grid.Row="2" Grid.Column="1" MouseLeftButtonDown="Fence_MouseLeftButtonDown" />
-            <Image Name="exit" Source="/Assets/Sprites/Static/exit.png" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" MouseLeftButtonDown="Exit_MouseLeftButtonDown" />
-            <Image Name="ball" Source="/Assets/Sprites/Static/play.png" Grid.Row="1" Grid.Column="3" Visibility="Collapsed" MouseLeftButtonUp="Ball_MouseLeftButtonUp"/>
-            <Image Name="crayon" Source="/Assets/Sprites/Static/crayon.png" Grid.Row="2" Grid.Column="3" Visibility="Collapsed" MouseLeftButtonDown="Crayon_MouseLeftButtonDown"/>
+
+
+            <Image Name="minus" Source="pack://application:,,,/Assets/Sprites/Static/minus.png" Grid.Row="1" Grid.Column="0" MouseLeftButtonDown="Minus_MouseLeftButtonDown" />
+            <Image Name="plus" Source="pack://application:,,,/Assets/Sprites/Static/plus.png" Grid.Row="1" Grid.Column="1" MouseLeftButtonDown="Plus_MouseLeftButtonDown" />
+            <Image Name="alarm" Source="pack://application:,,,/Assets/Sprites/Static/alarm.png" Grid.Row="2" Grid.Column="0" MouseLeftButtonDown="Alarm_MouseLeftButtonDown" />
+            <Image Name="fence" Source="pack://application:,,,/Assets/Sprites/Static/fence.png" Grid.Row="2" Grid.Column="1" MouseLeftButtonDown="Fence_MouseLeftButtonDown" />
+            <Image Name="exit" Source="pack://application:,,,/Assets/Sprites/Static/exit.png" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" MouseLeftButtonDown="Exit_MouseLeftButtonDown" />
+            <Image Name="ball" Source="pack://application:,,,/Assets/Sprites/Static/play.png" Grid.Row="1" Grid.Column="3" Visibility="Collapsed" MouseLeftButtonUp="Ball_MouseLeftButtonUp"/>
+            <Image Name="crayon" Source="pack://application:,,,/Assets/Sprites/Static/crayon.png" Grid.Row="2" Grid.Column="3" Visibility="Collapsed" MouseLeftButtonDown="Crayon_MouseLeftButtonDown"/>
             
         </Grid>
 
-        <Image Name="ballImage" Source="/Assets/Sprites/Static/ball.png" Width="48" Height="48" Visibility="Collapsed">
+        <Image Name="ballImage" Source="pack://application:,,,/Assets/Sprites/Static/ball.png" Width="48" Height="48" Visibility="Collapsed">
             <Image.RenderTransform >
                 <TranslateTransform x:Name="ballImageTransform"/>
             </Image.RenderTransform>
@@ -96,7 +96,7 @@
 
         <Grid x:Name="alarmSettings" Width="200" Height="250" Visibility="Collapsed">
             <Grid.Background>
-                <ImageBrush ImageSource="/Assets/Sprites/Static/alarmcard.png" />
+                <ImageBrush ImageSource="pack://application:,,,/Assets/Sprites/Static/alarmcard.png" />
             </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition />
@@ -142,7 +142,7 @@
                             </Style.Triggers>
                         </Style>
                     </Button.Style>
-                    <Image x:Name="playButtonImage" Source="/Assets/Sprites/Static/playArrow.png" MouseLeftButtonDown="PlayButtonImage_MouseLeftButtonDown"/>
+                    <Image x:Name="playButtonImage" Source="pack://application:,,,/Assets/Sprites/Static/playArrow.png" MouseLeftButtonDown="PlayButtonImage_MouseLeftButtonDown"/>
                 </Button>
                 <Button Name="resetButton" Width="25" Height="24" Margin="5" BorderBrush="{x:Null}" Foreground="{x:Null}">
                     <Button.Style>
@@ -164,7 +164,7 @@
                             </Style.Triggers>
                         </Style>
                     </Button.Style>
-                    <Image x:Name="replayButtonImage" Source="/Assets/Sprites/Static/replay.png" MouseLeftButtonDown="ReplayButtonImage_MouseLeftButtonDown"/>
+                    <Image x:Name="replayButtonImage" Source="pack://application:,,,/Assets/Sprites/Static/replay.png" MouseLeftButtonDown="ReplayButtonImage_MouseLeftButtonDown"/>
                 </Button>
             </StackPanel>
 
@@ -175,7 +175,7 @@
             <StackPanel.RenderTransform>
                 <TranslateTransform x:Name="stackPanelBannerTransform"/>
             </StackPanel.RenderTransform>
-            <Image x:Name="bannerStartImage" Source="/Assets/Sprites/Static/bannerBlue.png" Width="75" Height="75" Margin="0"/>
+            <Image x:Name="bannerStartImage" Source="pack://application:,,,/Assets/Sprites/Static/bannerBlue.png" Width="75" Height="75" Margin="0"/>
             <UniformGrid Columns="7" Margin="0">
                 <Label Name="bannerTextBox1" Background="#0015ff" Height="75" Content="" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#ffffff" FontFamily="pack://application:,,,/Tourney_Condensed-Italic.ttf#Tourney Condensed" FontSize="70"/>
                 <Label Name="bannerTextBox2" Background="#0015ff" Height="75" Content="" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#ffffff" FontFamily="pack://application:,,,/Tourney_Condensed-Italic.ttf#Tourney Condensed" FontSize="70"/>
@@ -186,7 +186,7 @@
                 <Label Name="bannerTextBox7" Background="#0015ff" Height="75" Content="" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Foreground="#ffffff" FontFamily="pack://application:,,,/Tourney_Condensed-Italic.ttf#Tourney Condensed" FontSize="70"/>
             </UniformGrid>
 
-            <Image x:Name="bannerEndImage" Source="/Assets/Sprites/Static/bannerBlue.png" Width="75" Height="75" Margin="0">
+            <Image x:Name="bannerEndImage" Source="pack://application:,,,/Assets/Sprites/Static/bannerBlue.png" Width="75" Height="75" Margin="0">
                 <Image.RenderTransform>
                     <TransformGroup>
                         <ScaleTransform ScaleX="-1" />
