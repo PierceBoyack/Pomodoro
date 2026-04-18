@@ -118,16 +118,13 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="happy" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\Sounds\happy.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="happy2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Sounds\happy2.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="sharpAlarm" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\Sounds\sharpAlarm.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="sharpAlarm2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Sounds\sharpAlarm2.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="silent" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\Sounds\silent.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="softAlarm" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Assets\Sounds\softAlarm.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="softAlarm2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Assets\Sounds\softAlarm2.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

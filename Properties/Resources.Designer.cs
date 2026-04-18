@@ -63,36 +63,27 @@ namespace Pomodoro.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream happy {
+        internal static System.IO.UnmanagedMemoryStream happy2 {
             get {
-                return ResourceManager.GetStream("happy", resourceCulture);
+                return ResourceManager.GetStream("happy2", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream sharpAlarm {
+        internal static System.IO.UnmanagedMemoryStream sharpAlarm2 {
             get {
-                return ResourceManager.GetStream("sharpAlarm", resourceCulture);
+                return ResourceManager.GetStream("sharpAlarm2", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
-        internal static System.IO.UnmanagedMemoryStream silent {
+        internal static System.IO.UnmanagedMemoryStream softAlarm2 {
             get {
-                return ResourceManager.GetStream("silent", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream softAlarm {
-            get {
-                return ResourceManager.GetStream("softAlarm", resourceCulture);
+                return ResourceManager.GetStream("softAlarm2", resourceCulture);
             }
         }
     }

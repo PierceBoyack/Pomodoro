@@ -67,6 +67,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
             <Label Name="alarmStatus" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" FontSize="30" Content=" : " Foreground="Red" Width="100" Height="40" FontFamily="pack://application:,,,/WDXLLubrifontSC-Regular.ttf/#WDXL Lubrifont SC" Grid.ColumnSpan="3">
@@ -81,12 +82,17 @@
             <Image Name="alarm" Source="/Assets/Sprites/Static/alarm.png" Grid.Row="2" Grid.Column="0" MouseLeftButtonDown="Alarm_MouseLeftButtonDown" />
             <Image Name="fence" Source="/Assets/Sprites/Static/fence.png" Grid.Row="2" Grid.Column="1" MouseLeftButtonDown="Fence_MouseLeftButtonDown" />
             <Image Name="exit" Source="/Assets/Sprites/Static/exit.png" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" MouseLeftButtonDown="Exit_MouseLeftButtonDown" />
+            <Image Name="ball" Source="/Assets/Sprites/Static/play.png" Grid.Row="1" Grid.Column="3" Visibility="Visible" MouseLeftButtonUp="Ball_MouseLeftButtonUp"/>
+            <Image Name="food" Source="/Assets/Sprites/Static/food.png" Grid.Row="2" Grid.Column="3" Visibility="Visible"/>
             
         </Grid>
-        
-        <Image Name="ball" Source="/Assets/Sprites/Static/play.png" Visibility="Collapsed" />
-        <Image Name="food" Source="/Assets/Sprites/Static/food.png" Visibility="Collapsed"/>
-        
+
+        <Image Name="ballImage" Source="/Assets/Sprites/Static/ball.png" Width="48" Height="48">
+            <Image.RenderTransform >
+                <TranslateTransform x:Name="ballImageTransform"/>
+            </Image.RenderTransform>
+        </Image>
+
         <Grid x:Name="alarmSettings" Width="200" Height="250" Visibility="Collapsed">
             <Grid.Background>
                 <ImageBrush ImageSource="/Assets/Sprites/Static/alarmcard.png" />

@@ -32,6 +32,11 @@ namespace Pomodoro {
         TimeSpan remainingTime;
         readonly SoundPlayer soundPlayer = new();
         System.Windows.Point marqueeStart;
+        System.Windows.Point mousePosition;
+        System.Windows.Point ballStartTrajectory;
+        short ballHeld = 0; //used for making trajectory
+        bool animateBall = false;
+        bool ballThrown = false;
         bool marqueeSelectionActive = false;
         bool letThisShitWork = false;
         bool mouseLeftHeld = false;
@@ -48,8 +53,10 @@ namespace Pomodoro {
         double transformX = 0;
         double transformY = 0;
         short scale = 0;
-        readonly ColumnDefinition longBreakColumn = new();
-        
+        double xSLope;
+        double ySlope;
+        bool chase = false;
+
 
 
 
@@ -83,7 +90,6 @@ namespace Pomodoro {
             Canvas.SetTop(rabbitRect, workHeight / 8);
             Canvas.SetLeft(marqueeLabel, (workWidth/2) - (marqueeLabel.Width/2));
             Canvas.SetTop(marqueeLabel, 50);
-            longBreakColumn.Width = new GridLength(1, GridUnitType.Star);
             mouseLeftHoldTimer.Tick += MouseLeftHoldTimer_Tick;
             // Track mouse movements so the rabbit can follow while the left button is held
             canvas.MouseMove += Canvas_MouseMove;
@@ -95,8 +101,50 @@ namespace Pomodoro {
         }
         private void UpdateFrames(object? sender, EventArgs e) {
             tickCount++;
+            ballHeld++;
+            if(animateBall && !ballThrown) {
+                mousePosition = Mouse.GetPosition(canvas);
+                if(ballHeld > 3 || (ballStartTrajectory.X == 0 && ballStartTrajectory.Y == 0)) {
+                    ballHeld = 0;
+                    ballStartTrajectory = mousePosition;
+                }
+                ballImageTransform.X = mousePosition.X - ballImage.Width/2;
+                ballImageTransform.Y = mousePosition.Y - ballImage.Height/2;
+            }
+            if (animateBall && ballThrown) {
+                Tuple<double, double> nextTraj = MoveBall(xSLope, ySlope, 0.98);
+                xSLope = nextTraj.Item1;
+                ySlope = nextTraj.Item2;
+                if (Math.Abs(xSLope) < 0.5 && Math.Abs(ySlope) < 0.5) {
+                    animateBall = false;
+                    ballThrown = false;
+                }
+            }
+
+
             if (currentState == "Run") {
-                MoveRabbit(movementDistance.Item1 / (ticksPerFrame * maxFrames), movementDistance.Item2 / (ticksPerFrame * maxFrames));
+                if (chase) {
+                    // Recalculate target vector each frame so the rabbit continuously chases the moving ball
+                    movementDistance = (
+                        ballImageTransform.X - (rabbitTransform.X + Canvas.GetLeft(rabbitRect)),
+                        ballImageTransform.Y - (rabbitTransform.Y + Canvas.GetTop(rabbitRect))
+                    );
+
+                    // Calculate the magnitude of the movement vector
+                    double magnitude = Math.Sqrt(movementDistance.Item1 * movementDistance.Item1 + movementDistance.Item2 * movementDistance.Item2);
+
+                    // Limit the movement to a maximum of 5 units per frame
+                    double maxMovement = 7.0;
+                    if (magnitude > maxMovement) {
+                        double scale = maxMovement / magnitude;
+                        movementDistance = (movementDistance.Item1 * scale, movementDistance.Item2 * scale);
+                    }
+
+                    // Move the rabbit
+                    MoveRabbit(movementDistance.Item1, movementDistance.Item2);
+                } else {
+                    MoveRabbit(movementDistance.Item1 / (ticksPerFrame * maxFrames), movementDistance.Item2 / (ticksPerFrame * maxFrames));
+                }
             }
             if (tickCount >= ticksPerFrame) {
                 tickCount = 0;
@@ -109,9 +157,12 @@ namespace Pomodoro {
                         minimumCycles++; // Prevent changing state at the end of the cycle so the alarm animation can loop until dismissed
                     } else if (currentState == "Exit") {
                         Application.Current.Shutdown(); // Close the application when the exit animation finishes
-
                     } else if (minimumCycles <= 0) {
-                        ChangeState();
+                        if (chase) {
+                            ChangeState("Run");
+                        } else {
+                            ChangeState();
+                        }
                     }
                 }
                 rabbitRect.Source = new BitmapImage(new Uri(GetUri()));
@@ -119,7 +170,29 @@ namespace Pomodoro {
             if (heartFrames <= 0) {
                 heart.Opacity = 0;
             }
+
         }
+
+        private Tuple<double, double> MoveBall(double xSlope, double ySlope, double decelerate) {
+            double nextX = (xSlope) * decelerate;
+            double nextY=  (ySlope) * decelerate;
+            if ((nextX + ballImageTransform.X + ballImage.Width >= workWidth) || (nextX + ballImageTransform.X <= ballImage.Width)) {
+                nextX *= -1;
+            }
+            if ((nextY + ballImageTransform.Y + ballImage.Height >= workHeight) || (nextY + ballImageTransform.Y <= ballImage.Height)) {
+                nextY *= -1;
+            }
+            ballImageTransform.X += nextX;
+            ballImageTransform.Y += nextY;
+            return Tuple.Create(nextX, nextY);
+        }
+
+        private void Ball_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+            optionsGrid.Visibility = Visibility.Collapsed;
+            ballImage.Visibility = Visibility.Visible;
+            animateBall = true;
+        }
+
         private void ChangeState() {
             if (currentState == "Entry") {
                 Canvas.SetTop(rabbitRect, Canvas.GetTop(rabbitRect) + 130);
@@ -179,9 +252,12 @@ namespace Pomodoro {
                 rabbitRect.Height = states[currentState].Item3.Item2;
             }
             rabbitRect.Source = new BitmapImage(new Uri(GetUri()));
-            if (currentState == "Run") {
-                movementDistance.Item1 = rand.Next(minRun, maxRun) * poles[rand.Next(0, 2)];
-                movementDistance.Item2 = rand.Next(minRun, maxRun) * poles[rand.Next(0, 2)];
+            if (currentState == "Run") { 
+                if (!chase) {
+
+                    movementDistance.Item1 = rand.Next(minRun, maxRun) * poles[rand.Next(0, 2)];
+                    movementDistance.Item2 = rand.Next(minRun, maxRun) * poles[rand.Next(0, 2)];
+                }
             }
             if (currentState == "Asleep") {
                 minimumCycles = 10;
@@ -462,7 +538,13 @@ namespace Pomodoro {
                 rabbitTransform.Y = fenceLocation.Item2 + (fenceArea.Item2 / 2) - (rabbitRect.Height / 2);
                 transformX = rabbitTransform.X;
                 transformY = rabbitTransform.Y;
-
+            }
+            if (animateBall && !ballThrown) {
+                ballThrown = true;
+                xSLope = mousePosition.X - ballStartTrajectory.X;
+                ySlope = mousePosition.Y - ballStartTrajectory.Y;
+                chase = true;
+                ChangeState("Run");
             }
         }
         private void Fence_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
@@ -476,13 +558,6 @@ namespace Pomodoro {
         }
 
         private void AddPlayOptions() {
-            optionsGrid.ColumnDefinitions.Add(longBreakColumn);
-            optionsGrid.Children.Add(ball);
-            optionsGrid.Children.Add(food);
-            Grid.SetRow(ball, 1);
-            Grid.SetRow(food, 2);
-            Grid.SetColumn(ball, 2);
-            Grid.SetColumn(food, 2);
             ball.Visibility = Visibility.Visible;
             food.Visibility = Visibility.Visible;
         }
@@ -490,9 +565,6 @@ namespace Pomodoro {
         private void RemovePlayOptions() {
             ball.Visibility = Visibility.Collapsed;
             food.Visibility = Visibility.Collapsed;
-            optionsGrid.ColumnDefinitions.Remove(longBreakColumn);
-            optionsGrid.Children.Remove(ball);
-            optionsGrid.Children.Remove(food);
         }
 
         private void NumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) {
@@ -531,7 +603,9 @@ namespace Pomodoro {
         }
         private void RestartPomodoroTimer(object? sender, ElapsedEventArgs e) {
             Debug.WriteLine("Long break ended. Pomodoro cycle complete.");
-            RemovePlayOptions();
+            Dispatcher.Invoke(() => {
+                RemovePlayOptions();
+            });
             intervals = resetIntervals;
             StartPomodoroTimer();
         }
@@ -582,15 +656,15 @@ namespace Pomodoro {
             if (color == "#0015ff") {
                 bannerStartImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/bannerBlue.png"));
                 bannerEndImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/bannerBlue.png"));
-                PlayAudio(Properties.Resources.sharpAlarm);
+                PlayAudio(Properties.Resources.sharpAlarm2);
             } else if (color == "#330066") {
                 bannerStartImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/bannerDarkPurple.png"));
                 bannerEndImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/bannerDarkPurple.png"));
-                PlayAudio(Properties.Resources.softAlarm);
+                PlayAudio(Properties.Resources.softAlarm2);
             } else if (color == "#190066") {
                 bannerStartImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/bannerPurple.png"));
                 bannerEndImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/bannerPurple.png"));
-                PlayAudio(Properties.Resources.softAlarm);
+                PlayAudio(Properties.Resources.softAlarm2);
             }
 
             // Compute the total panel width explicitly to avoid NaN from Auto sizing
@@ -635,6 +709,8 @@ namespace Pomodoro {
             }
             rabbitRect.Width *= scaler;
             rabbitRect.Height *= scaler;
+            ballImage.Width *= scaler;
+            ballImage.Height *= scaler;
             minRun = (int)(minRun * scaler);
             maxRun = (int)(maxRun * scaler);
             if (minRun > 50) { minRun = 50; }
@@ -651,6 +727,8 @@ namespace Pomodoro {
             }
             rabbitRect.Width /= scaler;
             rabbitRect.Height /= scaler;
+            ballImage.Width /= scaler;
+            ballImage.Height /= scaler;
             minRun = (int)(minRun / scaler);
             maxRun = (int)(maxRun / scaler);
         }
@@ -667,6 +745,8 @@ namespace Pomodoro {
         private void Exit_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             ChangeState("Exit");
         }
+
+        
 
         private void PlayButtonImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             showPlay = !showPlay;
