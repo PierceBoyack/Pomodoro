@@ -8,8 +8,8 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
-        Background="#190047FF"
-        Topmost="False"
+        Background="#000047FF"
+        Topmost="True"
         ShowInTaskbar="True"
         Title="Pomodoro" 
         PreviewMouseDown="Window_PreviewMouseDown" 
@@ -29,7 +29,7 @@
         <Label Name="marqueeLabel" FontSize="50" Width="895" Content="Select Fence Area (Right Click to Cancel)" Foreground="#ffffff" FontFamily="pack://application:,,,/SourGummy-Regular.ttf#Sour Gummy" Visibility="Collapsed"/>
 
         
-
+        
         <Image Name="rabbitRect" Width="185" Height="200" MouseLeftButtonDown="RabbitRect_MouseLeftButtonDown" MouseRightButtonDown="RabbitRect_MouseRightButtonDown" MouseLeftButtonUp="RabbitRect_MouseLeftButtonUp">
             <Image.RenderTransform>
                 <TransformGroup>
@@ -82,12 +82,12 @@
             <Image Name="alarm" Source="/Assets/Sprites/Static/alarm.png" Grid.Row="2" Grid.Column="0" MouseLeftButtonDown="Alarm_MouseLeftButtonDown" />
             <Image Name="fence" Source="/Assets/Sprites/Static/fence.png" Grid.Row="2" Grid.Column="1" MouseLeftButtonDown="Fence_MouseLeftButtonDown" />
             <Image Name="exit" Source="/Assets/Sprites/Static/exit.png" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" MouseLeftButtonDown="Exit_MouseLeftButtonDown" />
-            <Image Name="ball" Source="/Assets/Sprites/Static/play.png" Grid.Row="1" Grid.Column="3" Visibility="Visible" MouseLeftButtonUp="Ball_MouseLeftButtonUp"/>
-            <Image Name="food" Source="/Assets/Sprites/Static/food.png" Grid.Row="2" Grid.Column="3" Visibility="Visible"/>
+            <Image Name="ball" Source="/Assets/Sprites/Static/play.png" Grid.Row="1" Grid.Column="3" Visibility="Collapsed" MouseLeftButtonUp="Ball_MouseLeftButtonUp"/>
+            <Image Name="crayon" Source="/Assets/Sprites/Static/crayon.png" Grid.Row="2" Grid.Column="3" Visibility="Collapsed" MouseLeftButtonDown="Crayon_MouseLeftButtonDown"/>
             
         </Grid>
 
-        <Image Name="ballImage" Source="/Assets/Sprites/Static/ball.png" Width="48" Height="48">
+        <Image Name="ballImage" Source="/Assets/Sprites/Static/ball.png" Width="48" Height="48" Visibility="Collapsed">
             <Image.RenderTransform >
                 <TranslateTransform x:Name="ballImageTransform"/>
             </Image.RenderTransform>
@@ -194,6 +194,16 @@
                 </Image.RenderTransform>
             </Image>
         </StackPanel>
+
+        
+        <Image x:Name="droppedImage" Visibility="Collapsed" MouseLeftButtonDown="DroppedImage_MouseLeftButtonDown">
+            <Image.RenderTransform>
+                <TransformGroup>
+                    <TranslateTransform x:Name="droppedImageTransform" />
+                    <ScaleTransform x:Name="droppedImageScale" />
+                </TransformGroup>
+            </Image.RenderTransform>
+        </Image>
 
     </Canvas>
 

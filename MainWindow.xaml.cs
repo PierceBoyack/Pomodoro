@@ -56,6 +56,7 @@ namespace Pomodoro {
         double xSLope;
         double ySlope;
         bool chase = false;
+        bool bounced = false;
 
 
 
@@ -72,8 +73,8 @@ namespace Pomodoro {
 
         //Dictionary of states to (maxFrames, ticksPerFrame, (width, height))
         private readonly Dictionary<string, (short, short, (short, short))> states = new() {
-                                                                                { "Alarm", (2, 10, (115, 110)) }, { "Asleep", (6, 12, (75, 70)) }, { "Catch", (8, 3, (100, 170)) },
-                                                                                { "Draw", (4, 10, (90, 140)) }, { "Drowsy", (7, 10, (75, 70)) }, { "Entry", (8, 3, (75, 70)) },
+                                                                                { "Alarm", (2, 10, (115, 110)) }, { "Asleep", (6, 12, (75, 60)) }, { "Catch", (8, 3, (100, 170)) },
+                                                                                { "Draw", (4, 10, (80, 130)) }, { "Drowsy", (7, 10, (75, 60)) }, { "Entry", (8, 3, (75, 70)) },
                                                                                 { "Exit", (8, 3, (185, 200)) }, { "Idle", (6, 8, (75, 60)) }, { "Run", (6, 4, (100, 75)) } };
         string currentState = "Entry";
 
@@ -133,15 +134,28 @@ namespace Pomodoro {
                     // Calculate the magnitude of the movement vector
                     double magnitude = Math.Sqrt(movementDistance.Item1 * movementDistance.Item1 + movementDistance.Item2 * movementDistance.Item2);
 
-                    // Limit the movement to a maximum of 5 units per frame
-                    double maxMovement = 7.0;
-                    if (magnitude > maxMovement) {
-                        double scale = maxMovement / magnitude;
-                        movementDistance = (movementDistance.Item1 * scale, movementDistance.Item2 * scale);
-                    }
+                    if (magnitude <= 10) {
+                        animateBall = false;
+                        ballThrown = false;
+                        chase = false;
+                        ballImage.Visibility = Visibility.Collapsed;
+                        ChangeState("Catch");
+                        Canvas.SetLeft(rabbitRect, 0);
+                        Canvas.SetTop(rabbitRect, 0);
+                        rabbitTransform.X = Math.Min(ballImageTransform.X, fenceLocation.Item1 + fenceArea.Item1 + rabbitRect.Width);
+                        rabbitTransform.Y = Math.Max(ballImageTransform.Y - 122, 0);
+                    } else {
 
-                    // Move the rabbit
-                    MoveRabbit(movementDistance.Item1, movementDistance.Item2);
+                        // Limit the movement to a maximum of 5 units per frame
+                        double maxMovement = 7.0;
+                        if (magnitude > maxMovement) {
+                            double scale = maxMovement / magnitude;
+                            movementDistance = (movementDistance.Item1 * scale, movementDistance.Item2 * scale);
+                        }
+
+                        // Move the rabbit
+                        MoveRabbit(movementDistance.Item1, movementDistance.Item2);
+                    }
                 } else {
                     MoveRabbit(movementDistance.Item1 / (ticksPerFrame * maxFrames), movementDistance.Item2 / (ticksPerFrame * maxFrames));
                 }
@@ -150,14 +164,30 @@ namespace Pomodoro {
                 tickCount = 0;
                 frame++;
                 heartFrames--;
+                if(currentState == "Catch") {
+                    if (rabbitScale.ScaleX > 0) {
+                        if (rabbitTransform.X + 5 < fenceArea.Item1 + fenceLocation.Item2) {
+                            rabbitTransform.X -= 5;
+                        }
+                    } else if (rabbitTransform.X + 5 < fenceArea.Item1 + fenceLocation.Item2) {
+                        rabbitTransform.X += 5;
+                    }
+                }
                 if (frame >= maxFrames) {
                     frame = 0;
                     minimumCycles--;
                     if (currentState == "Alarm") {
                         minimumCycles++; // Prevent changing state at the end of the cycle so the alarm animation can loop until dismissed
                     } else if (currentState == "Exit") {
-                        Application.Current.Shutdown(); // Close the application when the exit animation finishes
+                        Application.Current.Shutdown(); // Close the application when the exit animation finishes                        
                     } else if (minimumCycles <= 0) {
+                        if (currentState == "Draw") {
+                            if (bounced) {
+                                rabbitTransform.Y += 50;
+                                bounced = false;
+                            }
+                            DropImage();
+                        }
                         if (chase) {
                             ChangeState("Run");
                         } else {
@@ -261,6 +291,8 @@ namespace Pomodoro {
             }
             if (currentState == "Asleep") {
                 minimumCycles = 10;
+            } else if (currentState == "Draw"){
+                minimumCycles = 3;
             } else {
                 minimumCycles = 1;
             }
@@ -293,6 +325,20 @@ namespace Pomodoro {
             if (currentY + y >= (rabbitRect.Height / 2) && (currentY + y <= fenceLocation.Item2 + fenceArea.Item2 - rabbitRect.Height && currentY + y >= fenceLocation.Item2)) {
                 transformY += y;
                 rabbitTransform.Y += y;
+            }
+            if (currentY <= fenceLocation.Item2) {
+                transformY += 5;
+                rabbitTransform.Y += 5;
+            } else if (currentY >= fenceLocation.Item2 + fenceArea.Item2) {
+                transformY -= 5;
+                rabbitTransform.Y -= 5;
+            }
+            if (currentX <= fenceLocation.Item1) {
+                transformX += 5;
+                rabbitTransform.X += 5;
+            } else if (currentX >= fenceLocation.Item1 + fenceArea.Item1) {
+                transformX -= 5;
+                rabbitTransform.X -= 5;
             }
             
 
@@ -441,10 +487,15 @@ namespace Pomodoro {
             optionsGrid.Visibility = Visibility.Visible;
             if (currentX + optionsGrid.Width > workWidth) {
                 currentX = workWidth - optionsGrid.Width - 10;
+            } else if (currentX < 0) {
+                currentX = 0;
             }
             if (currentY + optionsGrid.Height > workHeight) {
                 currentY = workHeight - optionsGrid.Height - 10;
+            } else if (currentY < 0) {
+                currentY = 0;
             }
+            
             optionsTransform.X = currentX;
             optionsTransform.Y = currentY;
         }
@@ -559,12 +610,12 @@ namespace Pomodoro {
 
         private void AddPlayOptions() {
             ball.Visibility = Visibility.Visible;
-            food.Visibility = Visibility.Visible;
+            crayon.Visibility = Visibility.Visible;
         }
 
         private void RemovePlayOptions() {
             ball.Visibility = Visibility.Collapsed;
-            food.Visibility = Visibility.Collapsed;
+            crayon.Visibility = Visibility.Collapsed;
         }
 
         private void NumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) {
@@ -746,7 +797,53 @@ namespace Pomodoro {
             ChangeState("Exit");
         }
 
-        
+        private void Crayon_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            ChangeState("Draw");
+            optionsGrid.Visibility = Visibility.Collapsed;
+            if(Canvas.GetTop(rabbitRect) + rabbitTransform.Y + 50 < fenceLocation.Item2) {
+                rabbitTransform.Y -= 50;
+                bounced = true;
+            }
+        }
+        private void DropImage() {
+            if (fenceArea.Item1 + fenceLocation.Item1 < rabbitTransform.X + Canvas.GetLeft(rabbitRect) + rabbitRect.Width) {
+                droppedImageTransform.X = rabbitTransform.X + Canvas.GetLeft(rabbitRect);
+            } else {
+                droppedImageTransform.X = rabbitTransform.X + Canvas.GetLeft(rabbitRect) + rabbitRect.Width;
+            }
+
+            if (fenceArea.Item2 + fenceLocation.Item2 < rabbitRect.Height + Canvas.GetTop(rabbitRect) + rabbitTransform.Y) {
+                droppedImageTransform.Y = rabbitTransform.Y + Canvas.GetTop(rabbitRect);
+            } else {
+                droppedImageTransform.Y = rabbitTransform.Y + Canvas.GetTop(rabbitRect) + rabbitRect.Height/2;
+            }
+            int num = rand.Next(1, 11);
+            droppedImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/drawing{num}.png"));
+            droppedImage.Width = 30;
+            droppedImage.Height = 21;
+            droppedImage.Visibility = Visibility.Visible;
+        }
+
+        private void DroppedImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+            droppedImage.Width = 400;
+            droppedImage.Height = 280;
+            double centerX = workWidth / 2 - droppedImage.Width;
+            double centerY = workHeight / 2 - droppedImage.Height;
+            droppedImageTransform.X = centerX;
+            droppedImageTransform.Y = centerY;
+            DoubleAnimation lowerImage = new() {
+                From = droppedImageTransform.Y,
+                To = SystemParameters.PrimaryScreenHeight,
+                Duration = TimeSpan.FromSeconds(1),
+                FillBehavior = FillBehavior.Stop,
+                BeginTime = TimeSpan.FromSeconds(3)
+            };
+            lowerImage.Completed += (s, e) => {
+                droppedImageTransform.BeginAnimation(TranslateTransform.YProperty, null);
+                droppedImage.Visibility = Visibility.Collapsed;
+            };
+            droppedImageTransform.BeginAnimation(TranslateTransform.YProperty, lowerImage);
+        }
 
         private void PlayButtonImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
             showPlay = !showPlay;
