@@ -135,7 +135,6 @@
     <Resource Include="Assets\Sprites\Catch\Catch4.png" />
     <Resource Include="Assets\Sprites\Catch\Catch5.png" />
     <Resource Include="Assets\Sprites\Catch\Catch6.png" />
-    <Resource Include="Assets\Sprites\Catch\Catch7.png" />
     <Resource Include="Assets\Sprites\Draw\Draw0.png" />
     <Resource Include="Assets\Sprites\Draw\Draw1.png" />
     <Resource Include="Assets\Sprites\Draw\Draw2.png" />

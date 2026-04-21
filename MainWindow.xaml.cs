@@ -69,7 +69,7 @@ namespace Pomodoro {
 
         //Dictionary of states to (maxFrames, ticksPerFrame, (width, height))
         private readonly Dictionary<string, (short, short, (short, short))> states = new() {
-                                                                                { "Alarm", (2, 10, (115, 110)) }, { "Asleep", (6, 12, (75, 60)) }, { "Catch", (8, 2, (100, 170)) },
+                                                                                { "Alarm", (2, 10, (115, 110)) }, { "Asleep", (6, 12, (75, 60)) }, { "Catch", (7, 2, (100, 170)) },
                                                                                 { "Draw", (4, 10, (80, 130)) }, { "Drowsy", (7, 10, (75, 60)) }, { "Entry", (8, 3, (75, 70)) },
                                                                                 { "Exit", (8, 3, (185, 200)) }, { "Idle", (6, 8, (75, 60)) }, { "Run", (6, 4, (100, 75)) } };
         string currentState = "Entry";
