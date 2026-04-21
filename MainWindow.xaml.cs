@@ -69,7 +69,7 @@ namespace Pomodoro {
 
         //Dictionary of states to (maxFrames, ticksPerFrame, (width, height))
         private readonly Dictionary<string, (short, short, (short, short))> states = new() {
-                                                                                { "Alarm", (2, 10, (115, 110)) }, { "Asleep", (6, 12, (75, 60)) }, { "Catch", (8, 3, (100, 170)) },
+                                                                                { "Alarm", (2, 10, (115, 110)) }, { "Asleep", (6, 12, (75, 60)) }, { "Catch", (8, 2, (100, 170)) },
                                                                                 { "Draw", (4, 10, (80, 130)) }, { "Drowsy", (7, 10, (75, 60)) }, { "Entry", (8, 3, (75, 70)) },
                                                                                 { "Exit", (8, 3, (185, 200)) }, { "Idle", (6, 8, (75, 60)) }, { "Run", (6, 4, (100, 75)) } };
         string currentState = "Entry";
@@ -100,7 +100,8 @@ namespace Pomodoro {
             tickCount++;
             ballHeld++;
             if(animateBall && !ballThrown) {
-                mousePosition = Mouse.GetPosition(canvas);
+                mousePosition = Mouse.GetPosition(this);
+                Debug.WriteLine($"Mouse is positioned at: ({mousePosition.X}, {mousePosition.Y})");
                 if(ballHeld > 3 || (ballStartTrajectory.X == 0 && ballStartTrajectory.Y == 0)) {
                     ballHeld = 0;
                     ballStartTrajectory = mousePosition;
@@ -217,6 +218,7 @@ namespace Pomodoro {
             optionsGrid.Visibility = Visibility.Collapsed;
             ballImage.Visibility = Visibility.Visible;
             animateBall = true;
+            THEWINDOW.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(1, 0, 0, 0));
         }
 
         private void ChangeState() {
@@ -318,7 +320,7 @@ namespace Pomodoro {
                     }
                 }
             }
-            if (currentY + y >= (rabbitRect.Height / 2) && (currentY + y <= fenceLocation.Item2 + fenceArea.Item2 - rabbitRect.Height && currentY + y >= fenceLocation.Item2)) {
+            if (currentY + y <= fenceLocation.Item2 + fenceArea.Item2 - rabbitRect.Height && currentY + y >= fenceLocation.Item2) {
                 transformY += y;
                 rabbitTransform.Y += y;
             }
@@ -588,6 +590,7 @@ namespace Pomodoro {
             }
             if (animateBall && !ballThrown) {
                 ballThrown = true;
+                THEWINDOW.Background = System.Windows.Media.Brushes.Transparent;
                 xSLope = mousePosition.X - ballStartTrajectory.X;
                 ySlope = mousePosition.Y - ballStartTrajectory.Y;
                 chase = true;
