@@ -3,6 +3,10 @@
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net10.0-windows</TargetFramework>
+	<PublishSingleFile>true</PublishSingleFile>
+	<SelfContained>true</SelfContained>
+	<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+	<IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
@@ -53,6 +57,24 @@
     <Content Remove="Assets\Sprites\Drowsy\Drowsy4.png" />
     <Content Remove="Assets\Sprites\Drowsy\Drowsy5.png" />
     <Content Remove="Assets\Sprites\Drowsy\Drowsy6.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat0_0.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat0_1.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat0_2.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat0_3.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat0_4.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat0_5.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat1_0.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat1_1.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat1_2.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat1_3.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat1_4.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat1_5.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat2_0.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat2_1.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat2_2.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat2_3.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat2_4.png" />
+    <Content Remove="Assets\Sprites\Eat\Eat2_5.png" />
     <Content Remove="Assets\Sprites\Entry\Entry0.png" />
     <Content Remove="Assets\Sprites\Entry\Entry1.png" />
     <Content Remove="Assets\Sprites\Entry\Entry2.png" />
@@ -111,6 +133,24 @@
     <None Remove="SourGummy-Regular.ttf" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\Sprites\Eat\Eat0_0.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat0_1.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat0_2.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat0_3.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat0_4.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat0_5.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat1_0.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat1_1.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat1_2.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat1_3.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat1_4.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat1_5.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat2_0.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat2_1.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat2_2.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat2_3.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat2_4.png" />
+    <Resource Include="Assets\Sprites\Eat\Eat2_5.png" />
     <Resource Include="Assets\Sprites\Entry\Entry6.png" />
   </ItemGroup>
   <ItemGroup>

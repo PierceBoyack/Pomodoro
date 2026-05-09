@@ -32,7 +32,9 @@ namespace Pomodoro {
         System.Windows.Point ballStartTrajectory;
         short ballHeld = 0; //used for making trajectory
         bool animateBall = false;
+        bool animateFood = false;
         bool ballThrown = false;
+        int foodNum = 0;
         bool marqueeSelectionActive = false;
         bool letThisShitWork = false;
         bool mouseLeftHeld = false;
@@ -71,7 +73,8 @@ namespace Pomodoro {
         private readonly Dictionary<string, (short, short, (short, short))> states = new() {
                                                                                 { "Alarm", (2, 10, (115, 110)) }, { "Asleep", (6, 12, (75, 60)) }, { "Catch", (7, 2, (100, 170)) },
                                                                                 { "Draw", (4, 10, (80, 130)) }, { "Drowsy", (7, 10, (75, 60)) }, { "Entry", (8, 3, (75, 70)) },
-                                                                                { "Exit", (8, 3, (185, 200)) }, { "Idle", (6, 8, (75, 60)) }, { "Run", (6, 4, (100, 75)) } };
+                                                                                { "Exit", (8, 3, (185, 200)) }, { "Idle", (6, 8, (75, 60)) }, { "Run", (6, 4, (100, 75)) },
+                                                                                { "Eat", (6, 5, (80, 130)) }};
         string currentState = "Entry";
 
         readonly Random rand = new();
@@ -116,6 +119,20 @@ namespace Pomodoro {
                 if (Math.Abs(xSLope) < 0.5 && Math.Abs(ySlope) < 0.5) {
                     animateBall = false;
                     ballThrown = false;
+                }
+            }
+            if(animateFood) {
+                mousePosition = Mouse.GetPosition(this);
+                foodImageTransform.X = mousePosition.X - foodImage.Width / 2;
+                foodImageTransform.Y = mousePosition.Y - foodImage.Height / 2;
+                double magnitude = Math.Sqrt(Math.Pow(foodImageTransform.X - (rabbitTransform.X + Canvas.GetLeft(rabbitRect)), 2) + Math.Pow(foodImageTransform.Y - (rabbitTransform.Y + Canvas.GetTop(rabbitRect)), 2));
+                if (magnitude < 30) {
+                    THEWINDOW.Background = System.Windows.Media.Brushes.Transparent;
+                    animateFood = false;
+                    foodImage.Visibility = Visibility.Collapsed;
+                    ChangeState("Eat");
+                    rabbitTransform.Y -= 20;
+                    PlayAudio(Properties.Resources.happy2);
                 }
             }
 
@@ -184,6 +201,20 @@ namespace Pomodoro {
                                 bounced = false;
                             }
                             DropImage();
+                        } else if (currentState == "Eat") {
+                            rabbitTransform.Y += 20;
+                            double currentX;
+                            if (rabbitScale.ScaleX == -1) {
+                                currentX = Canvas.GetLeft(rabbitRect) + rabbitTransform.X - rabbitRect.Width/2;
+                            } else {
+                                currentX = Canvas.GetLeft(rabbitRect) + rabbitTransform.X + (rabbitRect.Width / 2);
+                            }
+                            double currentY = Canvas.GetTop(rabbitRect) + transformY;
+                            heartTransform.X = currentX - (heart.Width / 2);
+                            heartTransform.Y = currentY - (heart.Height / 2);
+                            heart.Opacity = 1;
+                            heart.Visibility = Visibility.Visible;
+                            heartFrames = 5;
                         }
                         if (chase) {
                             ChangeState("Run");
@@ -196,6 +227,7 @@ namespace Pomodoro {
             }
             if (heartFrames <= 0) {
                 heart.Opacity = 0;
+                heart.Visibility = Visibility.Collapsed;
             }
 
         }
@@ -232,7 +264,7 @@ namespace Pomodoro {
                 int state = rand.Next(101);
                 if (state < 10) {
                     currentState = "Drowsy";
-                } else if (10 < state && state < 20) {
+                } else if (10 < state && state < 30) {
                     if (((movementDistance.Item1 + rabbitRect.Width + rabbitTransform.X) >= fenceArea.Item1) || ((movementDistance.Item2 + rabbitRect.Height + rabbitTransform.Y) >= fenceArea.Item2)) {
                         currentState = "Idle";
                     } else if (Math.Pow(Math.Pow(movementDistance.Item1, 2) + Math.Pow(movementDistance.Item2, 2), 0.5) >= (Math.Pow(Math.Pow(fenceArea.Item1, 2) + Math.Pow(fenceArea.Item2, 2), 0.5))) { 
@@ -240,13 +272,9 @@ namespace Pomodoro {
                     } else {
                         currentState = "Run";
                     }
-                } else if (state > 20) {
+                } else if (state > 30) {
                     currentState = "Idle";
                 }
-                
-
-
-
             }
             SetStateInfo();
         }
@@ -255,6 +283,9 @@ namespace Pomodoro {
             SetStateInfo();
         }
         private string GetUri() {
+            if (currentState == "Eat") {
+                return $"pack://application:,,,/Assets/Sprites/Eat/Eat{foodNum}_{frame}.png";
+            }
             return $"pack://application:,,,/Assets/Sprites/{currentState}/{currentState}{frame}.png";
         }
 
@@ -403,11 +434,12 @@ namespace Pomodoro {
             if (!mouseLeftHeld) {
                 double currentX;
                 if (rabbitScale.ScaleX == -1) {
-                    currentX = Canvas.GetLeft(rabbitRect) + rabbitTransform.X;
+                    currentX = Canvas.GetLeft(rabbitRect) + rabbitTransform.X - rabbitRect.Width / 2;
                 } else {
                     currentX = Canvas.GetLeft(rabbitRect) + rabbitTransform.X + (rabbitRect.Width / 2);
                 }
                 double currentY = Canvas.GetTop(rabbitRect) + rabbitTransform.Y;
+                heart.Visibility = Visibility.Visible;
                 heartTransform.X = currentX - (heart.Width / 2);
                 heartTransform.Y = currentY - (heart.Height / 2);
                 heart.Opacity = 1;
@@ -610,11 +642,13 @@ namespace Pomodoro {
         private void AddPlayOptions() {
             ball.Visibility = Visibility.Visible;
             crayon.Visibility = Visibility.Visible;
+            food.Visibility = Visibility.Visible;
         }
 
         private void RemovePlayOptions() {
             ball.Visibility = Visibility.Collapsed;
             crayon.Visibility = Visibility.Collapsed;
+            food.Visibility = Visibility.Collapsed;
         }
 
         private void NumberTextBox_PreviewTextInput(object sender, TextCompositionEventArgs e) {
@@ -842,6 +876,25 @@ namespace Pomodoro {
                 droppedImage.Visibility = Visibility.Collapsed;
             };
             droppedImageTransform.BeginAnimation(TranslateTransform.YProperty, lowerImage);
+        }
+
+        private void Food_MouseLeftButtonUp(object sender, MouseButtonEventArgs e) {
+            optionsGrid.Visibility = Visibility.Collapsed;
+            foodNum = rand.Next(0, 3);
+            switch (foodNum) {
+                case 0:
+                    foodImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/tomato.png"));
+                    break;
+                case 1:
+                    foodImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/lettuce.png"));
+                    break;
+                case 2:
+                    foodImage.Source = new BitmapImage(new Uri($"pack://application:,,,/Assets/Sprites/Static/carrot.png"));
+                    break;
+            }
+            THEWINDOW.Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(1, 0, 0, 0));
+            foodImage.Visibility = Visibility.Visible;
+            animateFood = true;
         }
 
         private void PlayButtonImage_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {

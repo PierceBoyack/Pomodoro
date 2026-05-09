@@ -41,7 +41,7 @@
             </Image.RenderTransform>
         </Image>
         
-        <Image Name="heart" Width="60" Source="pack://application:,,,/Assets/Sprites/Static/Heart.png" Opacity="0">
+        <Image Name="heart" Width="60" Height="60" Source="pack://application:,,,/Assets/Sprites/Static/Heart.png" Opacity="0">
             <Image.RenderTransform>
                 <TransformGroup>
                     <TranslateTransform x:Name="heartTransform" />
@@ -83,15 +83,20 @@
             <Image Name="plus" Source="pack://application:,,,/Assets/Sprites/Static/plus.png" Grid.Row="1" Grid.Column="1" MouseLeftButtonDown="Plus_MouseLeftButtonDown" />
             <Image Name="alarm" Source="pack://application:,,,/Assets/Sprites/Static/alarm.png" Grid.Row="2" Grid.Column="0" MouseLeftButtonDown="Alarm_MouseLeftButtonDown" />
             <Image Name="fence" Source="pack://application:,,,/Assets/Sprites/Static/fence.png" Grid.Row="2" Grid.Column="1" MouseLeftButtonDown="Fence_MouseLeftButtonDown" />
-            <Image Name="exit" Source="pack://application:,,,/Assets/Sprites/Static/exit.png" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3" MouseLeftButtonDown="Exit_MouseLeftButtonDown" />
+            <Image Name="exit" Source="pack://application:,,,/Assets/Sprites/Static/exit.png" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" MouseLeftButtonDown="Exit_MouseLeftButtonDown" />
             <Image Name="ball" Source="pack://application:,,,/Assets/Sprites/Static/play.png" Grid.Row="1" Grid.Column="3" Visibility="Collapsed" MouseLeftButtonUp="Ball_MouseLeftButtonUp"/>
             <Image Name="crayon" Source="pack://application:,,,/Assets/Sprites/Static/crayon.png" Grid.Row="2" Grid.Column="3" Visibility="Collapsed" MouseLeftButtonDown="Crayon_MouseLeftButtonDown"/>
-            
+            <Image Name="food" Source="pack://application:,,,/Assets/Sprites/Static/food.png" Grid.Row="3" Grid.Column="1" Visibility="Collapsed" Grid.ColumnSpan="2" MouseLeftButtonUp="Food_MouseLeftButtonUp"/>
         </Grid>
 
         <Image Name="ballImage" Source="pack://application:,,,/Assets/Sprites/Static/ball.png" Width="48" Height="48" Visibility="Collapsed">
             <Image.RenderTransform >
                 <TranslateTransform x:Name="ballImageTransform"/>
+            </Image.RenderTransform>
+        </Image>
+        <Image Name="foodImage" Source="pack://application:,,,/Assets/Sprites/Static/lettuce.png" Width="48" Height="48" Visibility="Collapsed">
+            <Image.RenderTransform >
+                <TranslateTransform x:Name="foodImageTransform"/>
             </Image.RenderTransform>
         </Image>
 
